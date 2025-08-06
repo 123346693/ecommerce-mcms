@@ -1,5 +1,16 @@
 {
   "welcome": "ForestField eCommerce",
   "greeting": "Have a great day!",
-  "login": "Login"
+  "login": "Login",
+
+  "product": {
+    "title": "Product Management",
+    "sku": "SKU",
+    "name": "Name",
+    "stock": "Stock",
+    "cost": "Cost",
+    "unit": "Unit",
+    "supplier": "Supplier",
+    "supplierUrl": "Supplier Link"
+  }
 }

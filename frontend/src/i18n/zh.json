@@ -1,5 +1,16 @@
 {
   "welcome": "ForestField eCommerce",
   "greeting": "祝你有美好的一天！",
-  "login": "登录"
+  "login": "登录",
+
+  "product": {
+    "title": "产品管理",
+    "sku": "货号",
+    "name": "名称",
+    "stock": "库存",
+    "cost": "成本",
+    "unit": "单位",
+    "supplier": "供货商",
+    "supplierUrl": "供货链接"
+  }
 }
