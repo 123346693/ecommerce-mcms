@@ -1,10 +1,76 @@
+/* ✅ index.css 全面升级为苹果官网字体风格 + 高级灰字体色 + 极简圆角感 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  color: #1c1c1e;
+  letter-spacing: 0.01em;
+  background-color: #fafafa;
 }
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+/* 链接风格 */
+a {
+  color: #007aff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* 标题统一 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  color: #1c1c1e;
+}
+
+/* 按钮字体继承 */
+button {
+  font-family: inherit;
+}
+
+/* ✅ 产品详情页滚动容器限制高度，溢出时滚动 */
+.drawer-section-scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* ✅ 详情页每个框体样式 */
+.drawer-section-box {
+  @apply bg-gray-100 rounded-xl p-4 mb-3 flex justify-between items-center cursor-pointer;
+}
+
+.drawer-section-box-title {
+  @apply text-sm font-medium text-gray-500;
+}
+
+.drawer-section-box-value {
+  @apply text-base font-semibold text-gray-800;
+}
+
+/* ✅ 输入框统一风格 */
+.drawer-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-white;
+}
+
+/* ✅ 编辑按钮风格 */
+.drawer-edit-btn {
+  @apply px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700;
+}
+
+/* ✅ 编辑模式下输入行样式 */
+.drawer-edit-row {
+  @apply mb-2;
 }

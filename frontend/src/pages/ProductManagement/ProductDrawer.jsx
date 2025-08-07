@@ -1,92 +1,186 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
-export default function ProductDrawer({ product, onClose }) {
-  const [editedProduct, setEditedProduct] = useState(product);
-  const [showStockModal, setShowStockModal] = useState(false);
-  const [stockChange, setStockChange] = useState(0);
-  const [reason, setReason] = useState('');
+const ProductDrawer = ({ product, onClose }) => {
+  const { t } = useTranslation();
+  const [editing, setEditing] = useState(false);
+  const [showAllLocations, setShowAllLocations] = useState(false);
+  const [showAllTransactions, setShowAllTransactions] = useState(false);
+  const [editedProduct, setEditedProduct] = useState({ ...product });
 
   const handleChange = (field, value) => {
-    setEditedProduct({ ...editedProduct, [field]: value });
+    setEditedProduct(prev => ({ ...prev, [field]: value }));
   };
 
-  const confirmStockChange = () => {
-    alert(`库存变更: ${stockChange}, 原因: ${reason}\n提醒管理员确认。`);
-    setShowStockModal(false);
+  const handleLocationChange = (index, key, value) => {
+    const updatedLocations = [...editedProduct.stockLocations];
+    updatedLocations[index][key] = value;
+    setEditedProduct(prev => ({ ...prev, stockLocations: updatedLocations }));
   };
+
+  const saveChanges = () => {
+    // TODO: 接入保存逻辑
+    setEditing(false);
+  };
+
+  const renderField = (label, field, unit) => (
+    <div className="drawer-edit-row">
+      <div className="text-sm text-gray-500 mb-1">{label}</div>
+      <input
+        type="text"
+        className="drawer-input"
+        value={editedProduct[field] || ""}
+        onChange={e => handleChange(field, e.target.value)}
+        disabled={!editing}
+      />
+      {unit && <span className="ml-2 text-sm text-gray-400">{unit}</span>}
+    </div>
+  );
+
+  const drawerSectionBox = (title, value, onClick) => (
+    <div
+      className="drawer-section-box cursor-pointer"
+      onClick={onClick}
+    >
+      <div className="drawer-section-box-title">{title}</div>
+      <div className="drawer-section-box-value">{value}</div>
+    </div>
+  );
 
   return (
-    <div className="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg p-6 z-50 overflow-y-auto transition-transform transform translate-x-0">
-      <button className="text-gray-500 mb-4" onClick={onClose}>关闭</button>
-      <h2 className="text-xl font-bold mb-4">产品详情 / Product Detail</h2>
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">SKU</label>
-          <input type="text" value={editedProduct.sku} disabled className="w-full border rounded px-3 py-2 bg-gray-100" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">产品名称 / Name</label>
-          <input type="text" value={editedProduct.name} onChange={(e) => handleChange('name', e.target.value)} className="w-full border rounded px-3 py-2" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">库存 / Stock</label>
-          <div className="flex items-center gap-3">
-            <input type="number" value={editedProduct.stock} disabled className="w-full border rounded px-3 py-2 bg-gray-100" />
-            <button className="bg-blue-600 text-white px-3 py-1 rounded" onClick={() => setShowStockModal(true)}>修改库存</button>
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-end z-50">
+      {/* ✅点击空白关闭 */}
+      <div className="flex-1" onClick={onClose}></div>
+
+      {/* ✅ 右侧面板 */}
+      <div className="w-[30%] bg-white h-full p-6 shadow-xl overflow-y-auto relative">
+
+        {/* 顶部按钮栏 */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg font-semibold">{t("product.detailTitle")}</h2>
+          <div>
+            <button className="drawer-edit-btn mr-2" onClick={() => setEditing(!editing)}>
+              {editing ? t("save") : t("edit")}
+            </button>
+            <button className="drawer-edit-btn bg-gray-500 hover:bg-gray-600" onClick={onClose}>
+              {t("close")}
+            </button>
           </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">成本 / Cost</label>
-          <input type="number" step="0.01" value={editedProduct.cost} onChange={(e) => handleChange('cost', parseFloat(e.target.value))} className="w-full border rounded px-3 py-2" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">单位 / Unit</label>
-          <input type="text" value={editedProduct.unit} onChange={(e) => handleChange('unit', e.target.value)} className="w-full border rounded px-3 py-2" />
-        </div>
-      </div>
 
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">出货/补货记录 / Transactions</h3>
-        <ul className="space-y-2">
-          {product.transactions?.map((tx, idx) => (
-            <li
-              key={idx}
-              onDoubleClick={() => alert(`详情：${tx.details}`)}
-              className="bg-gray-100 p-3 rounded cursor-pointer hover:bg-gray-200"
+        {/* 基本字段 */}
+        {renderField(t("product.sku"), "sku")}
+        {renderField(t("product.name"), "name")}
+        {renderField(t("product.stock"), "stock")}
+        {renderField(t("product.cost"), "cost")}
+        {renderField(t("product.unit"), "unit")}
+
+        {/* 尺寸字段 */}
+        <h3 className="mt-4 mb-2 text-sm font-medium text-gray-500">{t("product.dimensions")}</h3>
+        <div className="grid grid-cols-2 gap-4">
+          {renderField(t("product.height"), "height", "cm")}
+          {renderField(t("product.width"), "width", "cm")}
+          {renderField(t("product.depth"), "depth", "cm")}
+          {renderField(t("product.weight"), "weight", "kg")}
+        </div>
+
+        {/* 库存位置 */}
+        <h3 className="mt-6 mb-2 text-sm font-medium text-gray-500">{t("product.location")}</h3>
+        <div className="drawer-section-scrollable">
+          {(editedProduct.stockLocations || []).slice(0, 5).map((loc, index) => (
+            <div
+              key={index}
+              className="drawer-section-box cursor-pointer"
+              onClick={() => !editing && setShowAllLocations(true)}
             >
-              <span className="text-sm text-gray-700">{tx.date}</span> —
-              <span className={`ml-2 font-bold ${tx.change > 0 ? 'text-green-600' : 'text-red-600'}`}>{tx.change > 0 ? '+' : ''}{tx.change}</span>
-            </li>
+              {editing ? (
+                <>
+                  <input
+                    className="drawer-input mr-2"
+                    value={loc.location}
+                    onChange={e => handleLocationChange(index, "location", e.target.value)}
+                  />
+                  <input
+                    className="drawer-input w-20"
+                    value={loc.quantity}
+                    onChange={e => handleLocationChange(index, "quantity", e.target.value)}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="drawer-section-box-title">{loc.location}</div>
+                  <div className="drawer-section-box-value">
+                    {loc.quantity} {editedProduct.unit || "pcs"}
+                  </div>
+                </>
+              )}
+            </div>
           ))}
-          {product.transactions?.length === 0 && <li className="text-gray-400">暂无记录 / No Record</li>}
-        </ul>
+        </div>
+
+        {/* 出货补货记录 */}
+        <h3 className="mt-6 mb-2 text-sm font-medium text-gray-500">{t("product.transactions")}</h3>
+        <div className="drawer-section-scrollable">
+          {(product.transactions || []).slice(0, 5).map((tx, index) => (
+            <div
+              key={index}
+              className="drawer-section-box cursor-pointer"
+              onClick={() => !editing && setShowAllTransactions(true)}
+            >
+              <div className="drawer-section-box-title">
+                {format(new Date(tx.date), "dd MMM yyyy")}
+              </div>
+              <div className="drawer-section-box-value">
+                {tx.quantity > 0 ? `+${tx.quantity}` : tx.quantity} {editedProduct.unit || "pcs"}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 保存按钮 */}
+        {editing && (
+          <button className="drawer-edit-btn mt-4 w-full" onClick={saveChanges}>
+            {t("save")}
+          </button>
+        )}
       </div>
 
-      {showStockModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-1/3">
-            <h3 className="text-lg font-bold mb-4">库存变更 / Stock Adjustment</h3>
-            <p className="mb-2">产品：{editedProduct.name}</p>
-            <input
-              type="number"
-              placeholder="变更数量（+/-）"
-              value={stockChange}
-              onChange={(e) => setStockChange(parseInt(e.target.value))}
-              className="w-full border px-3 py-2 rounded mb-2"
-            />
-            <textarea
-              placeholder="说明 / Reason"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              className="w-full border px-3 py-2 rounded mb-4"
-            />
-            <div className="flex justify-end gap-3">
-              <button onClick={() => setShowStockModal(false)} className="text-gray-600">取消</button>
-              <button onClick={confirmStockChange} className="bg-blue-600 text-white px-4 py-2 rounded">确认</button>
-            </div>
+      {/* ✅ 全部位置弹窗 */}
+      {showAllLocations && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center" onClick={() => setShowAllLocations(false)}>
+          <div className="bg-white max-h-[80%] w-[500px] p-6 rounded-lg overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold mb-4">{t("product.location")}</h3>
+            {(product.stockLocations || []).map((loc, index) => (
+              <div key={index} className="drawer-section-box">
+                <div className="drawer-section-box-title">{loc.location}</div>
+                <div className="drawer-section-box-value">
+                  {loc.quantity} {product.unit || "pcs"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ✅ 全部交易弹窗 */}
+      {showAllTransactions && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center" onClick={() => setShowAllTransactions(false)}>
+          <div className="bg-white max-h-[80%] w-[500px] p-6 rounded-lg overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold mb-4">{t("product.transactions")}</h3>
+            {(product.transactions || []).map((tx, index) => (
+              <div key={index} className="drawer-section-box">
+                <div className="drawer-section-box-title">{format(new Date(tx.date), "dd MMM yyyy")}</div>
+                <div className="drawer-section-box-value">
+                  {tx.quantity > 0 ? `+${tx.quantity}` : tx.quantity} {product.unit || "pcs"}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default ProductDrawer;

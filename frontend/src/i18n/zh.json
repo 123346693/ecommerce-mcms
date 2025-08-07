@@ -2,15 +2,29 @@
   "welcome": "ForestField eCommerce",
   "greeting": "祝你有美好的一天！",
   "login": "登录",
-
+  "common": {
+    "edit": "编辑",
+    "save": "保存",
+    "close": "关闭"
+  },
   "product": {
     "title": "产品管理",
     "sku": "货号",
-    "name": "名称",
+    "name": "产品名称",
     "stock": "库存",
     "cost": "成本",
     "unit": "单位",
+    "location": "库存位置",
     "supplier": "供货商",
-    "supplierUrl": "供货链接"
+    "supplierUrlText": "供货链接",
+    "detailTitle": "产品详情",
+    "transactions": "出货/补货记录",
+    "noTransactions": "暂无交易记录",
+    "height": "高度",
+    "width": "宽度",
+    "depth": "深度",
+    "weight": "重量",
+    "dimensions": "尺寸（长×宽×高）",
+    "searchPlaceholder": "搜索产品..."
   }
 }

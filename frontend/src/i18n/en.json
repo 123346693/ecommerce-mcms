@@ -2,15 +2,29 @@
   "welcome": "ForestField eCommerce",
   "greeting": "Have a great day!",
   "login": "Login",
-
+  "common": {
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close"
+  },
   "product": {
     "title": "Product Management",
     "sku": "SKU",
-    "name": "Name",
+    "name": "Product Name",
     "stock": "Stock",
     "cost": "Cost",
     "unit": "Unit",
+    "location": "Location",
     "supplier": "Supplier",
-    "supplierUrl": "Supplier Link"
+    "supplierUrlText": "Supplier Link",
+    "detailTitle": "Product Detail",
+    "transactions": "Transactions",
+    "noTransactions": "No transaction records",
+    "height": "Height",
+    "width": "Width",
+    "depth": "Depth",
+    "weight": "Weight",
+    "dimensions": "Dimensions (L×W×H)",
+    "searchPlaceholder": "Search products..."
   }
 }
