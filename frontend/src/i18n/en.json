@@ -2,11 +2,7 @@
   "welcome": "ForestField eCommerce",
   "greeting": "Have a great day!",
   "login": "Login",
-  "common": {
-    "edit": "Edit",
-    "save": "Save",
-    "close": "Close"
-  },
+  "common": { "edit": "Edit", "save": "Save", "close": "Close" },
   "product": {
     "title": "Product Management",
     "sku": "SKU",
@@ -25,6 +21,38 @@
     "depth": "Depth",
     "weight": "Weight",
     "dimensions": "Dimensions (L×W×H)",
-    "searchPlaceholder": "Search products..."
+    "searchPlaceholder": "Search products...",
+    "filters": {
+      "title": "Filters",
+      "toggleShow": "Show Filters",
+      "toggleHide": "Hide Filters",
+      "stockStatus": "Stock Status",
+      "stockStatusAll": "All",
+      "stockStatusIn": "In Stock",
+      "stockStatusLow": "Low Stock",
+      "stockStatusOut": "Out of Stock",
+      "lowStockThreshold": "Low Stock Threshold",
+      "unit": "Unit",
+      "unitAll": "All Units",
+      "unitsMulti": "Units (Multi-select)",
+      "location": "Location",
+      "locationsMulti": "Locations (Multi-select)",
+      "locationAll": "All Locations",
+      "sortBy": "Sort By",
+      "sort": {
+        "field": { "sku": "SKU", "name": "Name", "stock": "Stock", "cost": "Cost", "weight": "Weight" },
+        "asc": "ASC",
+        "desc": "DESC"
+      },
+      "reset": "Reset Filters",
+      "perPage": "Per Page"
+    },
+    "pagination": {
+      "showing": "Showing",
+      "of": "of",
+      "page": "Page",
+      "prev": "Prev",
+      "next": "Next"
+    }
   }
 }
