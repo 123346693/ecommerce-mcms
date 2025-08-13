@@ -1,134 +1,261 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { format } from "date-fns";
+// src/pages/ProductDrawer.jsx
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import TransferModal from './TransferModal';
+import { getTotalQuantity, setPrimaryLocation } from './productData';
 
-const ProductDrawer = ({ product, onClose, onShowAllTransactions = () => {}, onShowAllLocations = () => {} }) => {
+export default function ProductDrawer({
+  product,
+  onClose,
+  onShowAllTransactions,
+  onShowAllLocations
+}) {
   const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
-  const [editedProduct, setEditedProduct] = useState({ ...product });
+  const [refreshTick, setRefreshTick] = useState(0);
+  const triggerRefresh = () => setRefreshTick(x => x + 1);
+  const [transferOpen, setTransferOpen] = useState(false);
 
-  const handleChange = (field, value) => {
-    setEditedProduct(prev => ({ ...prev, [field]: value }));
-  };
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose?.(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
-  const handleLocationChange = (index, key, value) => {
-    const updatedLocations = [...editedProduct.stockLocations];
-    updatedLocations[index][key] = value;
-    setEditedProduct(prev => ({ ...prev, stockLocations: updatedLocations }));
-  };
+  const totalQty = useMemo(() => getTotalQuantity(product), [product, refreshTick]);
 
-  const saveChanges = () => {
-    // TODO: 保存逻辑
+  const top5Locations = useMemo(() => {
+    const locs = Array.isArray(product?.stockLocations) ? product.stockLocations : [];
+    return locs.slice(0, 5);
+  }, [product, refreshTick]);
+
+  const top5Transactions = useMemo(() => {
+    const txs = Array.isArray(product?.transactions) ? product.transactions : [];
+    return txs.slice(0, 5);
+  }, [product]);
+
+  const [form, setForm] = useState({
+    sku: product?.sku ?? '',
+    name: product?.name ?? '',
+    cost: product?.cost ?? '',
+    unit: product?.unit ?? '',
+    height: product?.height ?? '',
+    width: product?.width ?? '',
+    depth: product?.depth ?? '',
+    weight: product?.weight ?? ''
+  });
+
+  useEffect(() => {
+    setForm({
+      sku: product?.sku ?? '',
+      name: product?.name ?? '',
+      cost: product?.cost ?? '',
+      unit: product?.unit ?? '',
+      height: product?.height ?? '',
+      width: product?.width ?? '',
+      depth: product?.depth ?? '',
+      weight: product?.weight ?? ''
+    });
+    setEditing(false);
+    setTransferOpen(false);
+  }, [product]);
+
+  const update = (k, v) => setForm(s => ({ ...s, [k]: v }));
+
+  const onSave = () => {
     setEditing(false);
   };
 
-  const renderField = (label, field, unit) => (
-    <div className="drawer-edit-row">
-      <div className="text-sm text-gray-500 mb-1">{label}</div>
-      <input
-        type="text"
-        className="drawer-input"
-        value={editedProduct[field] || ""}
-        onChange={e => handleChange(field, e.target.value)}
-        disabled={!editing}
-      />
-      {unit && <span className="ml-2 text-sm text-gray-400">{unit}</span>}
-    </div>
-  );
+  if (!product) return null;
+
+  const costView =
+    form.cost === '' || form.cost === null || form.cost === undefined
+      ? '-'
+      : `$${Number(form.cost).toFixed(2)}`;
+
+  const handleTransferDone = (res) => {
+    if (res?.target?.location && res?.target?.isPrimary) {
+      setPrimaryLocation(product.sku, res.target.location);
+    }
+    triggerRefresh();
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 z-50" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify_center md:justify-center bg-black/30"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
+      role="dialog"
+      aria-modal="true"
+    >
       <div
-        className="w-[28%] bg-white h-full p-6 shadow-xl overflow-y-auto ml-auto"
+        className="w-[780px] max-w-[95vw] max-h-[92vh] overflow-auto bg-white rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-semibold">{t("product.detailTitle")}</h2>
-          <div>
-            <button className="drawer-edit-btn mr-2" onClick={() => setEditing(!editing)}>
-              {editing ? t("common.save") : t("common.edit")}
-            </button>
-            <button className="drawer-edit-btn bg-gray-500 hover:bg-gray-600" onClick={onClose}>
-              {t("common.close")}
+        {/* 顶部条 */}
+        <div className="sticky top-0 bg-white border-b px-5 py-3 flex items-center justify-between">
+          <div className="min-w-0">
+            <div className="font-semibold text-gray-900 truncate">
+              {product?.name ?? '-'}
+            </div>
+            <div className="text-xs text-gray-500 truncate mt-0.5">
+              {t('product.sku', 'SKU')}：{product?.sku ?? '-'}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {!editing ? (
+              <button
+                className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
+                onClick={() => setEditing(true)}
+                title={t('common.edit')}
+              >
+                {t('common.edit')}
+              </button>
+            ) : (
+              <button
+                className="px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                onClick={onSave}
+                title={t('common.save')}
+              >
+                {t('common.save')}
+              </button>
+            )}
+            <button
+              className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
+              onClick={onClose}
+              title={t('common.close')}
+            >
+              {t('common.close')}
             </button>
           </div>
         </div>
 
-        {renderField(t("product.sku"), "sku")}
-        {renderField(t("product.name"), "name")}
-        {renderField(t("product.stock"), "stock")}
-        {renderField(t("product.cost"), "cost")}
-        {renderField(t("product.unit"), "unit")}
+        {/* 内容 */}
+        <div className="p-5 space-y-6">
+          {/* 基本信息 + 尺寸/重量/体积重量 */}
+          <section className="grid grid-cols-2 gap-3">
+            <Field label={t('product.sku')} value={form.sku} editing={editing} onChange={(v) => update('sku', v)} />
+            <Field label={t('product.name')} value={form.name} editing={editing} onChange={(v) => update('name', v)} />
+            <Field label={t('product.totalStock')} value={String(totalQty)} editing={false} />
+            <Field label={t('product.cost')} value={editing ? String(form.cost ?? '') : costView} editing={editing} type="number" onChange={(v) => update('cost', v)} />
+            <Field label={t('product.unit')} value={form.unit} editing={editing} onChange={(v) => update('unit', v)} />
+            <Field label={t('product.height')} value={String(form.height ?? '')} editing={editing} type="number" onChange={(v) => update('height', v)} />
+            <Field label={t('product.width')} value={String(form.width ?? '')} editing={editing} type="number" onChange={(v) => update('width', v)} />
+            <Field label={t('product.depth')} value={String(form.depth ?? '')} editing={editing} type="number" onChange={(v) => update('depth', v)} />
+            <Field label={t('product.weight')} value={String(form.weight ?? '')} editing={editing} type="number" onChange={(v) => update('weight', v)} />
+            <Field
+              label={t('product.volumetricWeight')}
+              value={(Number(product?.height)||0) && (Number(product?.width)||0) && (Number(product?.depth)||0)
+                ? `${((Number(product.height)*Number(product.width)*Number(product.depth))/6000).toFixed(2)} kg`
+                : '-'}
+              editing={false}
+            />
+          </section>
 
-        <h3 className="mt-4 mb-2 text-sm font-medium text-gray-500">{t("product.dimensions")}</h3>
-        <div className="grid grid-cols-2 gap-4">
-          {renderField(t("product.height"), "height", "cm")}
-          {renderField(t("product.width"), "width", "cm")}
-          {renderField(t("product.depth"), "depth", "cm")}
-          {renderField(t("product.weight"), "weight", "kg")}
-        </div>
-
-        <h3 className="mt-6 mb-2 text-sm font-medium text-gray-500">{t("product.location")}</h3>
-        <div className="drawer-section-scrollable">
-          {(editedProduct.stockLocations || []).slice(0, 5).map((loc, index) => (
-            <div
-              key={index}
-              className="drawer-section-box cursor-pointer"
-              onClick={() => {
-                if (!editing) onShowAllLocations(product);
-              }}
-            >
-              {editing ? (
-                <>
-                  <input
-                    className="drawer-input mr-2"
-                    value={loc.location}
-                    onChange={e => handleLocationChange(index, "location", e.target.value)}
-                  />
-                  <input
-                    className="drawer-input w-20"
-                    value={loc.quantity}
-                    onChange={e => handleLocationChange(index, "quantity", e.target.value)}
-                  />
-                </>
-              ) : (
-                <>
-                  <div className="drawer-section-box-title">{loc.location}</div>
-                  <div className="drawer-section-box-value">{loc.quantity} {editedProduct.unit || "pcs"}</div>
-                </>
-              )}
+          {/* 库存位置 + 库存转移按钮 */}
+          <section>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-900">
+                {t('product.locationsTitle')}
+              </h3>
+              <button
+                className="text-xs px-3 py-1.5 rounded-lg border bg-white hover:bg-gray-50"
+                onClick={() => setTransferOpen(true)}
+                title={t('product.inventoryTransfer')}
+              >
+                {t('product.inventoryTransfer')}
+              </button>
             </div>
-          ))}
-        </div>
 
-        <h3 className="mt-6 mb-2 text-sm font-medium text-gray-500">{t("product.transactions")}</h3>
-        <div className="drawer-section-scrollable">
-          {(product.transactions || []).slice(0, 5).map((tx, index) => (
-            <div
-              key={index}
-              className="drawer-section-box cursor-pointer"
-              onClick={() => {
-                if (!editing) onShowAllTransactions(product);
-              }}
-            >
-              <div className="drawer-section-box-title">
-                {format(new Date(tx.date), "dd MMM yyyy")}
-              </div>
-              <div className="drawer-section-box-value">
-                {tx.quantity > 0 ? `+${tx.quantity}` : tx.quantity} {product.unit || "pcs"}
-              </div>
-            </div>
-          ))}
-        </div>
+            {top5Locations.length === 0 ? (
+              <div className="text-sm text-gray-500">{t('product.noLocations')}</div>
+            ) : (
+              <ul className="divide-y rounded-lg border">
+                {top5Locations.map((loc, idx) => {
+                  const lname = loc?.location == null ? '-' : String(loc.location);
+                  const lqty = Number(loc?.quantity) || 0;
+                  return (
+                    <li
+                      key={`${lname}-${idx}`}
+                      className="px-3 py-2 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                      title={t('product.clickToSeeAllLocations')}
+                      onClick={() => onShowAllLocations?.()}
+                    >
+                      <span className="text-gray-800">
+                        {lname}
+                        {loc?.isPrimary && (
+                          <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
+                            {t('transfer.source.main')}
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-gray-700">{t('product.quantity')}：{lqty}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
 
-        {editing && (
-          <button className="drawer-edit-btn mt-4 w-full" onClick={saveChanges}>
-            {t("common.save")}
-          </button>
-        )}
+          {/* 出货 / 补货（前 5 条） */}
+          <section>
+            <h3 className="text-sm font-medium text-gray-900 mb-2">
+              {t('product.transactionsTitle')}
+            </h3>
+            {top5Transactions.length === 0 ? (
+              <div className="text-sm text-gray-500">{t('product.noTransactions')}</div>
+            ) : (
+              <ul className="divide-y rounded-lg border">
+                {top5Transactions.map((tx, idx) => {
+                  const when = tx?.date ?? '';
+                  const q = Number(tx?.quantity) || 0;
+                  const desc = q >= 0 ? t('product.restock') : t('product.ship');
+                  return (
+                    <li
+                      key={`tx-${idx}`}
+                      className="px-3 py-2 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                      title={t('product.clickToSeeAllTransactions')}
+                      onClick={() => onShowAllTransactions?.()}
+                    >
+                      <span className="text-gray-800">{when} {desc}</span>
+                      <span className={q < 0 ? 'text-red-600' : 'text-emerald-700'}>
+                        {q > 0 ? `+${q}` : q}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
+
+      {/* 库存转移弹窗 */}
+      <TransferModal
+        open={transferOpen}
+        onClose={() => setTransferOpen(false)}
+        product={product}
+        onDone={handleTransferDone}
+      />
     </div>
   );
-};
+}
 
-export default ProductDrawer;
+function Field({ label, value, editing, onChange, type = 'text' }) {
+  return (
+    <div className="text-sm">
+      <div className="text-gray-500">{label}</div>
+      {editing ? (
+        <input
+          className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500"
+          value={value ?? ''}
+          onChange={(e) => onChange?.(e.target.value)}
+          type={type}
+        />
+      ) : (
+        <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded bg-gray-50 text-gray-800 min-h-[28px]">
+          {value === '' || value === undefined || value === null ? '-' : String(value)}
+        </div>
+      )}
+    </div>
+  );
+}

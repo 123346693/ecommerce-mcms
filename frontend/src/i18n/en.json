@@ -1,58 +1,82 @@
 {
-  "welcome": "ForestField eCommerce",
-  "greeting": "Have a great day!",
+  "welcome": "Welcome back",
   "login": "Login",
-  "common": { "edit": "Edit", "save": "Save", "close": "Close" },
+  "email": "Email Address",
+  "password": "Password",
+  "greeting": "Have a great day!",
+  "weatherGreetings": [
+    "It's {{temp}}°C in {{city}} today. Stay warm!",
+    "Current temperature in {{city}} is {{temp}}°C. Keep hydrated!",
+    "Wow, it's {{temp}}°C in {{city}} – dress accordingly!",
+    "You're in {{city}} at {{temp}}°C – take care out there!"
+  ],
+  "common": {
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close"
+  },
   "product": {
-    "title": "Product Management",
     "sku": "SKU",
     "name": "Product Name",
-    "stock": "Stock",
+    "totalStock": "Total Stock",
     "cost": "Cost",
     "unit": "Unit",
-    "location": "Location",
-    "supplier": "Supplier",
-    "supplierUrlText": "Supplier Link",
-    "detailTitle": "Product Detail",
-    "transactions": "Transactions",
+    "height": "Height (cm)",
+    "width": "Width (cm)",
+    "depth": "Depth (cm)",
+    "weight": "Weight (kg)",
+    "volumetricWeight": "Volumetric Weight (kg)",
+    "locationsTitle": "Stock Locations (Top 5)",
+    "transactionsTitle": "Outbound / Inbound (Top 5)",
+    "noLocations": "No location data",
     "noTransactions": "No transaction records",
-    "height": "Height",
-    "width": "Width",
-    "depth": "Depth",
-    "weight": "Weight",
-    "dimensions": "Dimensions (L×W×H)",
-    "searchPlaceholder": "Search products...",
-    "filters": {
-      "title": "Filters",
-      "toggleShow": "Show Filters",
-      "toggleHide": "Hide Filters",
-      "stockStatus": "Stock Status",
-      "stockStatusAll": "All",
-      "stockStatusIn": "In Stock",
-      "stockStatusLow": "Low Stock",
-      "stockStatusOut": "Out of Stock",
-      "lowStockThreshold": "Low Stock Threshold",
-      "unit": "Unit",
-      "unitAll": "All Units",
-      "unitsMulti": "Units (Multi-select)",
-      "location": "Location",
-      "locationsMulti": "Locations (Multi-select)",
-      "locationAll": "All Locations",
-      "sortBy": "Sort By",
-      "sort": {
-        "field": { "sku": "SKU", "name": "Name", "stock": "Stock", "cost": "Cost", "weight": "Weight" },
-        "asc": "ASC",
-        "desc": "DESC"
-      },
-      "reset": "Reset Filters",
-      "perPage": "Per Page"
+    "quantity": "Qty",
+    "restock": "Inbound",
+    "ship": "Outbound",
+    "clickToSeeAllLocations": "Click to view all locations",
+    "clickToSeeAllTransactions": "Click to view all transactions",
+    "inventoryTransfer": "Inventory Transfer"
+  },
+  "transfer": {
+    "title": "Inventory Transfer",
+    "source": {
+      "title": "Source Locations (multi-select)",
+      "none": "No locations",
+      "available": "Available",
+      "transferQty": "Transfer Qty",
+      "all": "All",
+      "main": "Main"
     },
-    "pagination": {
-      "showing": "Showing",
-      "of": "of",
-      "page": "Page",
-      "prev": "Prev",
-      "next": "Next"
+    "target": {
+      "title": "Target Location",
+      "chooseExisting": "Choose existing location",
+      "createNew": "Create new location",
+      "selectPlaceholder": "Select a target location",
+      "inputPlaceholder": "Enter new location code, e.g. BOOK-03",
+      "setAsPrimary": "Set target as Main (Pickface)"
+    },
+    "preview": {
+      "totalMove": "Total to move"
+    },
+    "btn": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Transfer",
+      "submitting": "Submitting…"
+    },
+    "toast": {
+      "failed": "Transfer failed"
+    },
+    "error": {
+      "NO_SOURCES": "Select at least one source and quantity",
+      "BAD_SOURCE_INPUT": "Invalid source quantity",
+      "SOURCE_NOT_FOUND": "Source location not found",
+      "NOT_ENOUGH_QTY": "Insufficient source stock",
+      "TARGET_NOT_SELECTED": "Please choose a target location",
+      "TARGET_EQUALS_SOURCE": "Target cannot equal a source",
+      "NEW_CODE_EMPTY": "New location code cannot be empty",
+      "TARGET_ALREADY_EXISTS": "Location already exists, choose \"existing location\"",
+      "TARGET_TYPE_INVALID": "Invalid target type",
+      "UNKNOWN": "Unknown error"
     }
   }
 }

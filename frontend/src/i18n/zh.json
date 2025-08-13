@@ -1,58 +1,82 @@
 {
-  "welcome": "ForestField eCommerce",
-  "greeting": "祝你有美好的一天！",
+  "welcome": "欢迎回来",
   "login": "登录",
-  "common": { "edit": "编辑", "save": "保存", "close": "关闭" },
+  "email": "电子邮件地址",
+  "password": "密码",
+  "greeting": "祝你有美好的一天！",
+  "weatherGreetings": [
+    "{{city}}现在是{{temp}}°C，出门记得穿衣服！",
+    "今天{{city}}气温{{temp}}°C，注意保暖哦！",
+    "在{{city}}，现在有{{temp}}°C，记得多喝热水～",
+    "哇～{{city}}今天{{temp}}°C，要注意天气变化！"
+  ],
+  "common": {
+    "edit": "编辑",
+    "save": "保存",
+    "close": "关闭"
+  },
   "product": {
-    "title": "产品管理",
-    "sku": "货号",
+    "sku": "SKU",
     "name": "产品名称",
-    "stock": "库存",
+    "totalStock": "库存",
     "cost": "成本",
     "unit": "单位",
-    "location": "库存位置",
-    "supplier": "供货商",
-    "supplierUrlText": "供货链接",
-    "detailTitle": "产品详情",
-    "transactions": "出货/补货记录",
+    "height": "高度(cm)",
+    "width": "宽度(cm)",
+    "depth": "深度(cm)",
+    "weight": "重量(kg)",
+    "volumetricWeight": "体积重量(kg)",
+    "locationsTitle": "库存位置（前 5 条）",
+    "transactionsTitle": "出货 / 补货（前 5 条）",
+    "noLocations": "暂无库位数据",
     "noTransactions": "暂无交易记录",
-    "height": "高度",
-    "width": "宽度",
-    "depth": "深度",
-    "weight": "重量",
-    "dimensions": "尺寸（长×宽×高）",
-    "searchPlaceholder": "搜索产品...",
-    "filters": {
-      "title": "筛选",
-      "toggleShow": "展开筛选",
-      "toggleHide": "收起筛选",
-      "stockStatus": "库存状态",
-      "stockStatusAll": "全部",
-      "stockStatusIn": "有货",
-      "stockStatusLow": "低库存",
-      "stockStatusOut": "无货",
-      "lowStockThreshold": "低库存阈值",
-      "unit": "单位",
-      "unitAll": "全部单位",
-      "unitsMulti": "单位（可多选）",
-      "location": "位置",
-      "locationsMulti": "位置（可多选）",
-      "locationAll": "全部位置",
-      "sortBy": "排序字段",
-      "sort": {
-        "field": { "sku": "货号", "name": "名称", "stock": "库存", "cost": "成本", "weight": "重量" },
-        "asc": "升序",
-        "desc": "降序"
-      },
-      "reset": "重置筛选",
-      "perPage": "每页"
+    "quantity": "数量",
+    "restock": "补货",
+    "ship": "出货",
+    "clickToSeeAllLocations": "点击查看全部库位",
+    "clickToSeeAllTransactions": "点击查看全部出货/补货明细",
+    "inventoryTransfer": "库存转移"
+  },
+  "transfer": {
+    "title": "库存转移",
+    "source": {
+      "title": "来源位置（可多选）",
+      "none": "暂无位置",
+      "available": "可用",
+      "transferQty": "转出数量",
+      "all": "全部",
+      "main": "主位"
     },
-    "pagination": {
-      "showing": "正在显示",
-      "of": "共",
-      "page": "第",
-      "prev": "上一页",
-      "next": "下一页"
+    "target": {
+      "title": "目标位置",
+      "chooseExisting": "选择现有位置",
+      "createNew": "新建位置",
+      "selectPlaceholder": "请选择目标位置",
+      "inputPlaceholder": "输入新位置编码，如 BOOK-03",
+      "setAsPrimary": "将目标设为主库位（Pickface）"
+    },
+    "preview": {
+      "totalMove": "预转移合计"
+    },
+    "btn": {
+      "cancel": "取消",
+      "confirm": "确认转移",
+      "submitting": "提交中…"
+    },
+    "toast": {
+      "failed": "转移失败"
+    },
+    "error": {
+      "NO_SOURCES": "请选择至少一个来源位置并填写转移数量",
+      "BAD_SOURCE_INPUT": "来源数量不合法",
+      "SOURCE_NOT_FOUND": "来源位置不存在",
+      "NOT_ENOUGH_QTY": "来源库存不足",
+      "TARGET_NOT_SELECTED": "请先选择目标位置",
+      "TARGET_EQUALS_SOURCE": "目标位置不能与来源相同",
+      "NEW_CODE_EMPTY": "新位置编码不能为空",
+      "TARGET_ALREADY_EXISTS": "该位置已存在，请选择“现有位置”",
+      "TARGET_TYPE_INVALID": "目标类型不合法",
+      "UNKNOWN": "未知错误"
     }
   }
 }
