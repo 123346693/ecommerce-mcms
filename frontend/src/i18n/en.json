@@ -1,128 +1,176 @@
 {
-  "welcome": "Welcome back",
-  "login": "Login",
-  "email": "Email Address",
-  "password": "Password",
-  "greeting": "Have a great day!",
-  "weatherGreetings": [
-    "It's {{temp}}°C in {{city}} today. Stay warm!",
-    "Current temperature in {{city}} is {{temp}}°C. Keep hydrated!",
-    "Wow, it's {{temp}}°C in {{city}} – dress accordingly!",
-    "You're in {{city}} at {{temp}}°C – take care out there!"
-  ],
+  "app": {
+    "title": "MCMS",
+    "loading": "Loading...",
+    "noData": "No data",
+    "actions": "Actions"
+  },
+  "auth": {
+    "welcome": "Welcome back",
+    "login": "Login",
+    "email": "Email Address",
+    "password": "Password"
+  },
+  "greetings": {
+    "weatherGreetings": [
+      "It's {{temp}}°C in {{city}} today. Stay warm!",
+      "Current temperature in {{city}} is {{temp}}°C. Keep hydrated!",
+      "Wow, it's {{temp}}°C in {{city}} – dress accordingly!",
+      "You're in {{city}} at {{temp}}°C – take care out there!"
+    ]
+  },
   "common": {
-    "edit": "Edit",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
     "save": "Save",
-    "close": "Close"
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "apply": "Apply",
+    "reset": "Reset",
+    "search": "Search",
+    "add": "Add",
+    "viewAll": "View All",
+    "select": "Select",
+    "clear": "Clear",
+    "yes": "Yes",
+    "no": "No"
   },
   "product": {
+    "product": "Product",
+    "products": "Products",
+    "detail": "Product Detail",
     "sku": "SKU",
-    "name": "Product Name",
-    "totalStock": "Total Stock",
+    "aliasSku": "Alias SKU",
+    "name": "Name",
+    "category": "Category",
+    "status": "Status",
     "cost": "Cost",
-    "unit": "Unit",
-    "height": "Height (cm)",
-    "width": "Width (cm)",
-    "depth": "Depth (cm)",
-    "weight": "Weight (kg)",
-    "volumetricWeight": "Volumetric Weight (kg)",
-    "locationsTitle": "Stock Locations (Top 5)",
-    "transactionsTitle": "Outbound / Inbound (Top 5)",
-    "noLocations": "No location data",
-    "noTransactions": "No transaction records",
-    "quantity": "Qty",
-    "restock": "Inbound",
-    "ship": "Outbound",
-    "clickToSeeAllLocations": "Click to view all locations",
-    "clickToSeeAllTransactions": "Click to view all transactions",
-    "inventoryTransfer": "Inventory Transfer",
-    "manualAdjustment": "Manual Adjustment"
-  },
-  "transfer": {
-    "title": "Inventory Transfer",
-    "source": {
-      "title": "Source Locations (multi-select)",
-      "none": "No locations",
-      "available": "Available",
-      "transferQty": "Transfer Qty",
-      "all": "All",
-      "main": "Main"
-    },
-    "target": {
-      "title": "Target Location",
-      "chooseExisting": "Choose existing location",
-      "createNew": "Create new location",
-      "selectPlaceholder": "Select a target location",
-      "inputPlaceholder": "Enter new location code, e.g. BOOK-03",
-      "setAsPrimary": "Set target as Main (Pickface)"
-    },
-    "preview": {
-      "totalMove": "Total to move"
-    },
-    "btn": {
-      "cancel": "Cancel",
-      "confirm": "Confirm Transfer",
-      "submitting": "Submitting…"
-    },
-    "toast": {
-      "failed": "Transfer failed"
-    },
-    "error": {
-      "NO_SOURCES": "Select at least one source and quantity",
-      "BAD_SOURCE_INPUT": "Invalid source quantity",
-      "SOURCE_NOT_FOUND": "Source location not found",
-      "NOT_ENOUGH_QTY": "Insufficient source stock",
-      "TARGET_NOT_SELECTED": "Please choose a target location",
-      "TARGET_EQUALS_SOURCE": "Target cannot equal a source",
-      "NEW_CODE_EMPTY": "New location code cannot be empty",
-      "TARGET_ALREADY_EXISTS": "Location already exists, choose \"existing location\"",
-      "TARGET_TYPE_INVALID": "Invalid target type",
-      "UNKNOWN": "Unknown error"
-    }
-  },
-  "adjust": {
-    "title": "Manual Adjustment",
-    "left": {
-      "title": "Adjustment Info",
-      "type": "Adjustment Type",
-      "deduct": "Outbound (Deduct)",
-      "add": "Inbound (Add)",
-      "reason": "Reason",
-      "note": "Note",
-      "notePlaceholder": "e.g. damaged package, count variance"
-    },
-    "right": {
-      "title": "Target & Quantity",
-      "existing": "Choose existing location",
-      "new": "Create new location",
-      "selectPlaceholder": "Select a location",
-      "inputPlaceholder": "Enter new location code, e.g. BOOK-03",
-      "qty": "Quantity",
-      "available": "Available"
-    },
-    "btn": {
-      "cancel": "Cancel",
-      "confirm": "Confirm Adjustment",
-      "submitting": "Submitting…"
-    },
-    "toast": {
-      "failed": "Adjustment failed"
-    },
-    "reason": {
+    "price": "Price",
+    "currencySymbol": "$",
+    "totalStock": "Total Stock",
+    "available": "Available",
+    "reserved": "Reserved",
+    "uom": "Unit",
+    "dimensions": "Dimensions",
+    "length": "Length",
+    "width": "Width",
+    "height": "Height",
+    "depth": "Depth",
+    "weight": "Weight",
+    "volumeWeight": "Volumetric Weight",
+    "volumeWeightFormula": "Volumetric Weight = Length × Width × Height ÷ 6000",
+    "locations": "Inventory Locations",
+    "location": "Inventory Location",
+    "primaryLocation": "Primary Location",
+    "addLocation": "Add Location",
+    "transactions": "Transactions",
+    "recentTransactions": "Recent Transactions",
+    "viewAllLocations": "View All Locations",
+    "viewAllTransactions": "View All Transactions",
+    "transfer": "Inventory Transfer",
+    "transferVerb": "Transfer",
+    "adjustment": "Manual Adjustment",
+    "adjust": "Adjust",
+    "reason": "Reason",
+    "increase": "Increase",
+    "decrease": "Decrease",
+    "quantity": "Quantity",
+    "fromLocation": "From Location",
+    "toLocation": "To Location",
+    "newLocation": "New Location",
+    "selectLocation": "Select a location",
+    "makePrimary": "Set as Primary",
+    "notes": "Notes",
+    "by": "By",
+    "time": "Time",
+    "type": "Type",
+    "inbound": "Inbound",
+    "outbound": "Outbound",
+    "balance": "Balance",
+    "stockNow": "Stock Now",
+    "unitPcs": "pcs",
+    "filters": "Filters",
+    "sort": "Sort",
+    "sortBy": "Sort by",
+    "sortAsc": "Ascending",
+    "sortDesc": "Descending",
+    "position": "Position",
+    "positions": "Positions",
+    "locationPlaceholder": "Type or select a location",
+    "adjustmentReasons": {
       "damage": "Damage",
-      "shrinkage": "Shrinkage",
-      "cycle": "Cycle Count",
+      "loss": "Loss/Unknown Consumption",
+      "countCorrection": "Count Correction",
       "other": "Other"
-    },
-    "error": {
-      "PRODUCT_NOT_FOUND": "Product not found",
-      "BAD_QTY": "Invalid quantity",
-      "TARGET_NOT_SELECTED": "Please select a location",
-      "NEW_CODE_EMPTY": "New location code cannot be empty",
-      "TARGET_TYPE_INVALID": "Invalid target type",
-      "TARGET_NOT_FOUND": "Target location not found",
-      "NOT_ENOUGH_QTY": "Insufficient stock to deduct",
-      "UNKNOWN": "Unknown error"
     }
+  },
+  "transferModal": {
+    "title": "Inventory Transfer",
+    "leftTitle": "Current Locations",
+    "rightTitle": "Select Destination",
+    "qtyToTransfer": "Quantity to Transfer",
+    "hintZeroCleanup": "If a location becomes 0 after transfer, it will be removed.",
+    "setPrimaryHint": "You can mark a location as primary for this product.",
+    "submit": "Transfer",
+    "success": "Transfer completed."
+  },
+  "adjustmentModal": {
+    "title": "Manual Adjustment",
+    "direction": "Adjustment Type",
+    "increase": "Increase (+)",
+    "decrease": "Decrease (-)",
+    "selectReason": "Select a reason",
+    "location": "Location",
+    "submit": "Apply Adjustment",
+    "success": "Adjustment applied."
+  },
+  "drawer": {
+    "title": "Product Detail",
+    "close": "Close",
+    "stockSummary": "Stock Summary",
+    "topLocations": "Top 5 Locations (click to view all)",
+    "topTransactions": "Recent 5 Transactions (click to view all)",
+    "openAllLocations": "Open All Locations",
+    "openAllTransactions": "Open All Transactions",
+    "openTransfer": "Open Transfer",
+    "openAdjustment": "Open Manual Adjustment"
+  },
+  "allLocationsModal": {
+    "title": "Inventory Locations",
+    "location": "Inventory Location",
+    "quantity": "Quantity",
+    "makePrimary": "Set Primary",
+    "close": "Close"
+  },
+  "allTransactionsModal": {
+    "title": "Transactions",
+    "date": "Date",
+    "user": "User",
+    "location": "Location",
+    "qty": "Qty",
+    "reason": "Reason",
+    "type": "Type",
+    "close": "Close"
+  },
+  "errors": {
+    "required": "This field is required",
+    "invalidNumber": "Invalid number",
+    "notEnoughStock": "Not enough stock",
+    "selectLocation": "Please select a location"
+  },
+
+  "sort": {
+    "sortBy": "Sort by",
+    "order": "Order",
+    "bySku": "SKU",
+    "byName": "Name",
+    "byLocation": "Location",
+    "byPrice": "Price",
+    "byStock": "Stock",
+    "ascending": "Ascending",
+    "descending": "Descending"
   }
 }

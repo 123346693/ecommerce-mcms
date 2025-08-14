@@ -1,4 +1,3 @@
-// src/pages/AdjustmentModal.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { adjustStockWithTransaction } from './productData';
@@ -14,10 +13,10 @@ export default function AdjustmentModal({ open, onClose, product, onDone }) {
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const locations = useMemo(() => {
-    return Array.isArray(product?.stockLocations) ? product.stockLocations : [];
-  }, [product]);
-
+  const locations = useMemo(
+    () => (Array.isArray(product?.stockLocations) ? product.stockLocations : []),
+    [product]
+  );
   const existingCodes = useMemo(() => locations.map(l => String(l.location)), [locations]);
 
   const qtyNum = Number(qty);
@@ -36,7 +35,7 @@ export default function AdjustmentModal({ open, onClose, product, onDone }) {
     } else {
       const code = newCode.trim();
       if (!code) return false;
-      if (existingCodes.includes(code)) return false; // 新建不能重复
+      if (existingCodes.includes(code)) return false; // 新建不能与已有重复
     }
     return true;
   }, [product, qty, qtyNum, mode, targetLoc, type, selectedAvailable, existingCodes, newCode]);
@@ -62,11 +61,11 @@ export default function AdjustmentModal({ open, onClose, product, onDone }) {
     try {
       const payload = {
         sku: product.sku,
-        target: mode === 'existing'
-          ? { type: 'existing', location: targetLoc }
-          : { type: 'new', newCode: newCode.trim() },
-        // add: 正数；deduct: 负数
-        quantity: type === 'add' ? qtyNum : -qtyNum,
+        target:
+          mode === 'existing'
+            ? { type: 'existing', location: targetLoc }
+            : { type: 'new', newCode: newCode.trim() },
+        quantity: type === 'add' ? qtyNum : -qtyNum, // add 正数 / deduct 负数
         reason,
         note
       };

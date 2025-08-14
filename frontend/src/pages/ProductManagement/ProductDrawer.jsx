@@ -1,4 +1,3 @@
-// src/pages/ProductDrawer.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TransferModal from './TransferModal';
@@ -16,7 +15,6 @@ export default function ProductDrawer({
   const [refreshTick, setRefreshTick] = useState(0);
   const triggerRefresh = () => setRefreshTick(x => x + 1);
 
-  // 弹窗开关
   const [transferOpen, setTransferOpen] = useState(false);
   const [adjustOpen, setAdjustOpen] = useState(false);
 
@@ -75,7 +73,6 @@ export default function ProductDrawer({
       ? '-'
       : `$${Number(form.cost).toFixed(2)}`;
 
-  // —— 转移成功后刷新 —— //
   const handleTransferDone = (res) => {
     if (res?.target?.location && res?.target?.isPrimary) {
       setPrimaryLocation(product.sku, res.target.location);
@@ -83,7 +80,6 @@ export default function ProductDrawer({
     triggerRefresh();
   };
 
-  // —— 手动调整成功后刷新 —— //
   const handleAdjustDone = () => {
     triggerRefresh();
   };
@@ -152,9 +148,11 @@ export default function ProductDrawer({
             <Field label={t('product.weight')} value={String(form.weight ?? '')} editing={editing} type="number" onChange={(v) => update('weight', v)} />
             <Field
               label={t('product.volumetricWeight')}
-              value={(Number(product?.height)||0) && (Number(product?.width)||0) && (Number(product?.depth)||0)
-                ? `${((Number(product.height)*Number(product.width)*Number(product.depth))/6000).toFixed(2)} kg`
-                : '-'}
+              value={
+                (Number(product?.height)||0) && (Number(product?.width)||0) && (Number(product?.depth)||0)
+                  ? `${((Number(product.height)*Number(product.width)*Number(product.depth))/6000).toFixed(2)} kg`
+                  : '-'
+              }
               editing={false}
             />
           </section>

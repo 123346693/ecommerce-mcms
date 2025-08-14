@@ -13,7 +13,12 @@
   "common": {
     "edit": "编辑",
     "save": "保存",
-    "close": "关闭"
+    "close": "关闭",
+    "apply": "应用",
+    "select": "选择",
+    "clear": "清空",
+    "ok": "确定",
+    "cancel": "取消"
   },
   "product": {
     "sku": "SKU",
@@ -28,6 +33,9 @@
     "volumetricWeight": "体积重量(kg)",
     "locationsTitle": "库存位置（前 5 条）",
     "transactionsTitle": "出货 / 补货（前 5 条）",
+    "location": "库存位置",
+    "locations": "库存位置",
+    "transactions": "出货 / 补货记录",
     "noLocations": "暂无库位数据",
     "noTransactions": "暂无交易记录",
     "quantity": "数量",
@@ -81,7 +89,7 @@
     }
   },
   "adjust": {
-    "title": "手动调整 / Manual Adjustment",
+    "title": "手动调整",
     "left": {
       "title": "调整信息",
       "type": "调整类型",
@@ -124,5 +132,17 @@
       "NOT_ENOUGH_QTY": "库存不足，无法扣减",
       "UNKNOWN": "未知错误"
     }
+  },
+
+  "sort": {
+    "sortBy": "排序字段",
+    "order": "顺序",
+    "bySku": "货号",
+    "byName": "名称",
+    "byLocation": "位置",
+    "byPrice": "价格",
+    "byStock": "库存",
+    "ascending": "升序",
+    "descending": "降序"
   }
 }
