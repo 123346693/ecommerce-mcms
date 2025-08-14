@@ -44,7 +44,8 @@
     "clickToSeeAllLocations": "点击查看全部库位",
     "clickToSeeAllTransactions": "点击查看全部出货/补货明细",
     "inventoryTransfer": "库存转移",
-    "manualAdjustment": "手动调整"
+    "manualAdjustment": "手动调整",
+    "searchPlaceholder": "搜索产品名或货号"
   },
   "transfer": {
     "title": "库存转移",
@@ -133,7 +134,6 @@
       "UNKNOWN": "未知错误"
     }
   },
-
   "sort": {
     "sortBy": "排序字段",
     "order": "顺序",
@@ -144,5 +144,9 @@
     "byStock": "库存",
     "ascending": "升序",
     "descending": "降序"
+  },
+  "filter": {
+    "location": "位置",
+    "searchLocation": "搜索位置"
   }
 }

@@ -7,19 +7,15 @@ import ProductDrawer from './ProductDrawer';
 export default function ProductPage() {
   const { t } = useTranslation();
 
-  // ===== 数据源：使用我们项目里的模拟数据，不用 mock =====
   const [products] = useState(productsData);
 
-  // ===== 抽屉 =====
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
   const openDrawer = (p) => { setActive(p); setOpen(true); };
   const closeDrawer = () => { setOpen(false); setActive(null); };
 
-  // ===== 关键词搜索 =====
   const [keyword, setKeyword] = useState('');
 
-  // ===== 位置多选（弹出式） =====
   const allLocations = useMemo(() => {
     const set = new Set();
     products.forEach(p => (p?.stockLocations || []).forEach(l => {
@@ -30,25 +26,23 @@ export default function ProductPage() {
 
   const [locOpen, setLocOpen] = useState(false);
   const [locSearch, setLocSearch] = useState('');
-  const [selectedLocations, setSelectedLocations] = useState([]); // 选中的位置编码（多选）
+  const [selectedLocations, setSelectedLocations] = useState([]);
 
   const visibleLocations = useMemo(() => {
     const s = locSearch.trim().toLowerCase();
     if (!s) return allLocations;
     return allLocations.filter(x => x.toLowerCase().includes(s));
   }, [allLocations, locSearch]);
+
   const toggleOneLocation = (code) => {
     setSelectedLocations(prev => prev.includes(code) ? prev.filter(x => x !== code) : [...prev, code]);
   };
   const selectAllLocations = () => setSelectedLocations(allLocations);
   const clearAllLocations = () => setSelectedLocations([]);
 
-  // ===== 排序：2 个右侧下拉 =====
-  const [sortField, setSortField] = useState('sku');     // sku | name | location | price | stock
-  const [sortOrder, setSortOrder] = useState('asc');     // asc | desc
+  const [sortField, setSortField] = useState('sku');
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  // ===== 工具函数：位置/库存汇总 =====
-  // 计算“主库位编码”（用于按位置排序）：优先 isPrimary，其次第一个库位，最后空串
   function getPrimaryLocCode(p) {
     const arr = Array.isArray(p?.stockLocations) ? p.stockLocations : [];
     const primary = arr.find(l => l?.isPrimary);
@@ -56,11 +50,9 @@ export default function ProductPage() {
     return code;
   }
 
-  // 计算总库存（用于按库存排序、卡片显示）
   const getTotalQuantity = (p) =>
     (p?.stockLocations || []).reduce((sum, l) => sum + (Number(l?.quantity) || 0), 0);
 
-  // ===== 过滤 + 排序 =====
   const filtered = useMemo(() => {
     const kw = keyword.trim().toLowerCase();
 
@@ -89,13 +81,12 @@ export default function ProductPage() {
           const B = getPrimaryLocCode(b);
           const aEmpty = A.length === 0, bEmpty = B.length === 0;
           if (aEmpty && bEmpty) return 0;
-          if (aEmpty) return 1;       // 空位置排末尾（无论升降序）
+          if (aEmpty) return 1;
           if (bEmpty) return -1;
           const base = A.localeCompare(B, undefined, numericOpts);
-          return dir === -1 ? -base : base; // 修正：严格按 asc/desc 翻转
+          return dir === -1 ? -base : base;
         }
         case 'price': {
-          // 我们的数据字段名是 cost（即你口中的价格）
           const pa = Number(a?.cost) || 0;
           const pb = Number(b?.cost) || 0;
           return (pa - pb) * dir;
@@ -113,7 +104,6 @@ export default function ProductPage() {
     return list;
   }, [products, keyword, selectedLocations, sortField, sortOrder]);
 
-  // 点击外部收起位置下拉
   useEffect(() => {
     const onClick = (e) => {
       const pop = document.getElementById('location-multiselect-popover');
@@ -127,21 +117,17 @@ export default function ProductPage() {
 
   return (
     <div className="p-4 md:p-6">
-      {/* 顶部：关键词 + 位置选择器 + 排序 */}
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        {/* 左侧：关键词 + 位置选择器 */}
-        <div className="flex flex-1 flex-col gap-3 md:flex-row md:items-center">
-          {/* 关键词搜索 */}
-          <div className="flex-1">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center">
+          <div className="w-full md:w-[420px] lg:w-[560px]">
             <input
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              placeholder={t('product.searchPlaceholder', 'Search by name or SKU')}
+              placeholder={t('product.searchPlaceholder')}
               className="w-full h-10 rounded-xl border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          {/* 位置多选（按钮 + 弹出） */}
           <div className="relative">
             <button
               id="location-multiselect-trigger"
@@ -149,7 +135,7 @@ export default function ProductPage() {
               onClick={() => setLocOpen(v => !v)}
               className="inline-flex h-10 items-center gap-2 rounded-xl border bg-white px-3 text-sm hover:bg-gray-50"
             >
-              <span className="text-gray-700">{t('filter.location', 'Location')}</span>
+              <span className="text-gray-700">{t('filter.location')}</span>
               <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-700">
                 {selectedLocations.length || t('common.all', 'All')}
               </span>
@@ -161,7 +147,6 @@ export default function ProductPage() {
                 id="location-multiselect-popover"
                 className="absolute right-0 z-20 mt-2 w-80 rounded-xl border bg-white shadow-lg"
               >
-                {/* 搜索框 */}
                 <div className="border-b p-2">
                   <input
                     value={locSearch}
@@ -171,9 +156,7 @@ export default function ProductPage() {
                   />
                 </div>
 
-                {/* 列表 */}
                 <div className="max-h-[320px] overflow-auto p-1">
-                  {/* 全选/清空 */}
                   <div className="sticky top-0 z-10 mb-1 bg-white px-2 py-1.5">
                     <div className="flex items-center gap-2">
                       <button
@@ -194,7 +177,6 @@ export default function ProductPage() {
                     </div>
                   </div>
 
-                  {/* 勾选项 */}
                   <ul className="space-y-0.5 px-1 pb-2">
                     {visibleLocations.length === 0 ? (
                       <li className="px-2 py-2 text-xs text-gray-400">{t('app.noData', 'No data')}</li>
@@ -223,9 +205,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* 右侧：排序（两个下拉） */}
         <div className="flex items-center gap-3">
-          {/* 字段 */}
           <div className="inline-flex items-center gap-2">
             <span className="text-sm text-gray-600">{t('sort.sortBy', 'Sort by')}</span>
             <select
@@ -241,7 +221,6 @@ export default function ProductPage() {
             </select>
           </div>
 
-          {/* 顺序 */}
           <div className="inline-flex items-center gap-2">
             <span className="text-sm text-gray-600">{t('sort.order', 'Order')}</span>
             <select
@@ -249,7 +228,6 @@ export default function ProductPage() {
               onChange={(e) => setSortOrder(e.target.value)}
               className="h-9 px-3 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              {/* 修复：去掉多余的 '<'，确保 option 结构正确 */}
               <option value="asc">{t('sort.ascending', 'Ascending')}</option>
               <option value="desc">{t('sort.descending', 'Descending')}</option>
             </select>
@@ -257,7 +235,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* 列表卡片 */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map(p => {
           const total = getTotalQuantity(p);
@@ -290,7 +267,6 @@ export default function ProductPage() {
         })}
       </div>
 
-      {/* 抽屉 */}
       {open && (
         <ProductDrawer
           product={active}

@@ -1,169 +1,141 @@
 {
-  "app": {
-    "title": "MCMS",
-    "loading": "Loading...",
-    "noData": "No data",
-    "actions": "Actions"
-  },
-  "auth": {
-    "welcome": "Welcome back",
-    "login": "Login",
-    "email": "Email Address",
-    "password": "Password"
-  },
-  "greetings": {
-    "weatherGreetings": [
-      "It's {{temp}}°C in {{city}} today. Stay warm!",
-      "Current temperature in {{city}} is {{temp}}°C. Keep hydrated!",
-      "Wow, it's {{temp}}°C in {{city}} – dress accordingly!",
-      "You're in {{city}} at {{temp}}°C – take care out there!"
-    ]
-  },
+  "welcome": "Welcome back",
+  "login": "Login",
+  "email": "Email Address",
+  "password": "Password",
+  "greeting": "Have a great day!",
+  "weatherGreetings": [
+    "{{city}} is {{temp}}°C now — dress accordingly!",
+    "Today in {{city}} it's {{temp}}°C — stay warm!",
+    "In {{city}}, it's currently {{temp}}°C — keep hydrated!",
+    "Wow — {{city}} is {{temp}}°C today; watch the weather!"
+  ],
   "common": {
-    "ok": "OK",
-    "cancel": "Cancel",
-    "close": "Close",
-    "save": "Save",
     "edit": "Edit",
-    "delete": "Delete",
-    "confirm": "Confirm",
-    "back": "Back",
+    "save": "Save",
+    "close": "Close",
     "apply": "Apply",
-    "reset": "Reset",
-    "search": "Search",
-    "add": "Add",
-    "viewAll": "View All",
     "select": "Select",
     "clear": "Clear",
-    "yes": "Yes",
-    "no": "No"
+    "ok": "OK",
+    "cancel": "Cancel"
   },
   "product": {
-    "product": "Product",
-    "products": "Products",
-    "detail": "Product Detail",
     "sku": "SKU",
-    "aliasSku": "Alias SKU",
-    "name": "Name",
-    "category": "Category",
-    "status": "Status",
+    "name": "Product Name",
+    "totalStock": "Stock",
     "cost": "Cost",
-    "price": "Price",
-    "currencySymbol": "$",
-    "totalStock": "Total Stock",
-    "available": "Available",
-    "reserved": "Reserved",
-    "uom": "Unit",
-    "dimensions": "Dimensions",
-    "length": "Length",
-    "width": "Width",
-    "height": "Height",
-    "depth": "Depth",
-    "weight": "Weight",
-    "volumeWeight": "Volumetric Weight",
-    "volumeWeightFormula": "Volumetric Weight = Length × Width × Height ÷ 6000",
-    "locations": "Inventory Locations",
-    "location": "Inventory Location",
-    "primaryLocation": "Primary Location",
-    "addLocation": "Add Location",
-    "transactions": "Transactions",
-    "recentTransactions": "Recent Transactions",
-    "viewAllLocations": "View All Locations",
-    "viewAllTransactions": "View All Transactions",
-    "transfer": "Inventory Transfer",
-    "transferVerb": "Transfer",
-    "adjustment": "Manual Adjustment",
-    "adjust": "Adjust",
-    "reason": "Reason",
-    "increase": "Increase",
-    "decrease": "Decrease",
+    "unit": "Unit",
+    "height": "Height (cm)",
+    "width": "Width (cm)",
+    "depth": "Depth (cm)",
+    "weight": "Weight (kg)",
+    "volumetricWeight": "Volumetric Weight (kg)",
+    "locationsTitle": "Stock Locations (Top 5)",
+    "transactionsTitle": "Shipments / Restocks (Top 5)",
+    "location": "Stock Location",
+    "locations": "Stock Locations",
+    "transactions": "Shipment / Restock Records",
+    "noLocations": "No location data",
+    "noTransactions": "No transaction data",
     "quantity": "Quantity",
-    "fromLocation": "From Location",
-    "toLocation": "To Location",
-    "newLocation": "New Location",
-    "selectLocation": "Select a location",
-    "makePrimary": "Set as Primary",
-    "notes": "Notes",
-    "by": "By",
-    "time": "Time",
-    "type": "Type",
-    "inbound": "Inbound",
-    "outbound": "Outbound",
-    "balance": "Balance",
-    "stockNow": "Stock Now",
-    "unitPcs": "pcs",
-    "filters": "Filters",
-    "sort": "Sort",
-    "sortBy": "Sort by",
-    "sortAsc": "Ascending",
-    "sortDesc": "Descending",
-    "position": "Position",
-    "positions": "Positions",
-    "locationPlaceholder": "Type or select a location",
-    "adjustmentReasons": {
-      "damage": "Damage",
-      "loss": "Loss/Unknown Consumption",
-      "countCorrection": "Count Correction",
-      "other": "Other"
+    "restock": "Restock",
+    "ship": "Ship",
+    "clickToSeeAllLocations": "Click to view all locations",
+    "clickToSeeAllTransactions": "Click to view all shipment/restock details",
+    "inventoryTransfer": "Inventory Transfer",
+    "manualAdjustment": "Manual Adjustment",
+    "searchPlaceholder": "Search name or SKU"
+  },
+  "transfer": {
+    "title": "Inventory Transfer",
+    "source": {
+      "title": "Source Locations (multiple allowed)",
+      "none": "No locations",
+      "available": "Available",
+      "transferQty": "Transfer Quantity",
+      "all": "All",
+      "main": "Primary"
+    },
+    "target": {
+      "title": "Target Location",
+      "chooseExisting": "Choose Existing Location",
+      "createNew": "Create New Location",
+      "selectPlaceholder": "Please select a target location",
+      "inputPlaceholder": "Enter new location code, e.g., BOOK-03",
+      "setAsPrimary": "Set target as primary location (Pickface)"
+    },
+    "preview": {
+      "totalMove": "Total to Transfer"
+    },
+    "btn": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Transfer",
+      "submitting": "Submitting..."
+    },
+    "toast": {
+      "failed": "Transfer failed"
+    },
+    "error": {
+      "NO_SOURCES": "Please select at least one source location and enter transfer quantities",
+      "BAD_SOURCE_INPUT": "Invalid source quantity",
+      "SOURCE_NOT_FOUND": "Source location not found",
+      "NOT_ENOUGH_QTY": "Insufficient stock at source",
+      "TARGET_NOT_SELECTED": "Please select a target location first",
+      "TARGET_EQUALS_SOURCE": "Target location cannot be the same as source",
+      "NEW_CODE_EMPTY": "New location code cannot be empty",
+      "TARGET_ALREADY_EXISTS": "Location already exists; please choose \"Existing Location\"",
+      "TARGET_TYPE_INVALID": "Invalid target type",
+      "UNKNOWN": "Unknown error"
     }
   },
-  "transferModal": {
-    "title": "Inventory Transfer",
-    "leftTitle": "Current Locations",
-    "rightTitle": "Select Destination",
-    "qtyToTransfer": "Quantity to Transfer",
-    "hintZeroCleanup": "If a location becomes 0 after transfer, it will be removed.",
-    "setPrimaryHint": "You can mark a location as primary for this product.",
-    "submit": "Transfer",
-    "success": "Transfer completed."
-  },
-  "adjustmentModal": {
+  "adjust": {
     "title": "Manual Adjustment",
-    "direction": "Adjustment Type",
-    "increase": "Increase (+)",
-    "decrease": "Decrease (-)",
-    "selectReason": "Select a reason",
-    "location": "Location",
-    "submit": "Apply Adjustment",
-    "success": "Adjustment applied."
+    "left": {
+      "title": "Adjustment Info",
+      "type": "Adjustment Type",
+      "deduct": "Outbound (Decrease)",
+      "add": "Inbound (Increase)",
+      "reason": "Adjustment Reason",
+      "note": "Note",
+      "notePlaceholder": "e.g., Packaging damage, count discrepancy, etc."
+    },
+    "right": {
+      "title": "Target Location & Quantity",
+      "existing": "Select Existing Location",
+      "new": "Create New Location",
+      "selectPlaceholder": "Please select a location",
+      "inputPlaceholder": "Enter new location code, e.g., BOOK-03",
+      "qty": "Adjustment Quantity",
+      "available": "Currently Available"
+    },
+    "btn": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Adjustment",
+      "submitting": "Submitting..."
+    },
+    "toast": {
+      "failed": "Adjustment failed"
+    },
+    "reason": {
+      "damage": "Damage",
+      "shrinkage": "Unknown Loss",
+      "cycle": "Cycle Count Discrepancy",
+      "other": "Other"
+    },
+    "error": {
+      "PRODUCT_NOT_FOUND": "Product not found",
+      "BAD_QTY": "Invalid quantity",
+      "TARGET_NOT_SELECTED": "Please select a target location",
+      "NEW_CODE_EMPTY": "New location code cannot be empty",
+      "TARGET_TYPE_INVALID": "Invalid target type",
+      "TARGET_NOT_FOUND": "Target location not found",
+      "NOT_ENOUGH_QTY": "Insufficient stock to deduct",
+      "UNKNOWN": "Unknown error"
+    }
   },
-  "drawer": {
-    "title": "Product Detail",
-    "close": "Close",
-    "stockSummary": "Stock Summary",
-    "topLocations": "Top 5 Locations (click to view all)",
-    "topTransactions": "Recent 5 Transactions (click to view all)",
-    "openAllLocations": "Open All Locations",
-    "openAllTransactions": "Open All Transactions",
-    "openTransfer": "Open Transfer",
-    "openAdjustment": "Open Manual Adjustment"
-  },
-  "allLocationsModal": {
-    "title": "Inventory Locations",
-    "location": "Inventory Location",
-    "quantity": "Quantity",
-    "makePrimary": "Set Primary",
-    "close": "Close"
-  },
-  "allTransactionsModal": {
-    "title": "Transactions",
-    "date": "Date",
-    "user": "User",
-    "location": "Location",
-    "qty": "Qty",
-    "reason": "Reason",
-    "type": "Type",
-    "close": "Close"
-  },
-  "errors": {
-    "required": "This field is required",
-    "invalidNumber": "Invalid number",
-    "notEnoughStock": "Not enough stock",
-    "selectLocation": "Please select a location"
-  },
-
   "sort": {
-    "sortBy": "Sort by",
+    "sortBy": "Sort Field",
     "order": "Order",
     "bySku": "SKU",
     "byName": "Name",
@@ -172,5 +144,9 @@
     "byStock": "Stock",
     "ascending": "Ascending",
     "descending": "Descending"
+  },
+  "filter": {
+    "location": "Location",
+    "searchLocation": "Search location"
   }
 }
