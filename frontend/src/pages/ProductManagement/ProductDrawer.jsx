@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TransferModal from './TransferModal';
+import AdjustmentModal from './AdjustmentModal';
 import { getTotalQuantity, setPrimaryLocation } from './productData';
 
 export default function ProductDrawer({
@@ -14,7 +15,10 @@ export default function ProductDrawer({
   const [editing, setEditing] = useState(false);
   const [refreshTick, setRefreshTick] = useState(0);
   const triggerRefresh = () => setRefreshTick(x => x + 1);
+
+  // 弹窗开关
   const [transferOpen, setTransferOpen] = useState(false);
+  const [adjustOpen, setAdjustOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose?.(); };
@@ -32,7 +36,7 @@ export default function ProductDrawer({
   const top5Transactions = useMemo(() => {
     const txs = Array.isArray(product?.transactions) ? product.transactions : [];
     return txs.slice(0, 5);
-  }, [product]);
+  }, [product, refreshTick]);
 
   const [form, setForm] = useState({
     sku: product?.sku ?? '',
@@ -58,13 +62,11 @@ export default function ProductDrawer({
     });
     setEditing(false);
     setTransferOpen(false);
+    setAdjustOpen(false);
   }, [product]);
 
   const update = (k, v) => setForm(s => ({ ...s, [k]: v }));
-
-  const onSave = () => {
-    setEditing(false);
-  };
+  const onSave = () => setEditing(false);
 
   if (!product) return null;
 
@@ -73,6 +75,7 @@ export default function ProductDrawer({
       ? '-'
       : `$${Number(form.cost).toFixed(2)}`;
 
+  // —— 转移成功后刷新 —— //
   const handleTransferDone = (res) => {
     if (res?.target?.location && res?.target?.isPrimary) {
       setPrimaryLocation(product.sku, res.target.location);
@@ -80,9 +83,14 @@ export default function ProductDrawer({
     triggerRefresh();
   };
 
+  // —— 手动调整成功后刷新 —— //
+  const handleAdjustDone = () => {
+    triggerRefresh();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify_center md:justify-center bg-black/30"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
       onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
       role="dialog"
       aria-modal="true"
@@ -196,11 +204,21 @@ export default function ProductDrawer({
             )}
           </section>
 
-          {/* 出货 / 补货（前 5 条） */}
+          {/* 出货 / 补货（前 5 条） + 手动调整按钮 */}
           <section>
-            <h3 className="text-sm font-medium text-gray-900 mb-2">
-              {t('product.transactionsTitle')}
-            </h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-900">
+                {t('product.transactionsTitle')}
+              </h3>
+              <button
+                className="text-xs px-3 py-1.5 rounded-lg border bg-white hover:bg-gray-50"
+                onClick={() => setAdjustOpen(true)}
+                title={t('product.manualAdjustment')}
+              >
+                {t('product.manualAdjustment')}
+              </button>
+            </div>
+
             {top5Transactions.length === 0 ? (
               <div className="text-sm text-gray-500">{t('product.noTransactions')}</div>
             ) : (
@@ -235,6 +253,14 @@ export default function ProductDrawer({
         onClose={() => setTransferOpen(false)}
         product={product}
         onDone={handleTransferDone}
+      />
+
+      {/* 手动调整弹窗 */}
+      <AdjustmentModal
+        open={adjustOpen}
+        onClose={() => setAdjustOpen(false)}
+        product={product}
+        onDone={handleAdjustDone}
       />
     </div>
   );

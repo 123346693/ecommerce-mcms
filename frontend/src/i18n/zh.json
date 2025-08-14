@@ -35,7 +35,8 @@
     "ship": "出货",
     "clickToSeeAllLocations": "点击查看全部库位",
     "clickToSeeAllTransactions": "点击查看全部出货/补货明细",
-    "inventoryTransfer": "库存转移"
+    "inventoryTransfer": "库存转移",
+    "manualAdjustment": "手动调整"
   },
   "transfer": {
     "title": "库存转移",
@@ -76,6 +77,51 @@
       "NEW_CODE_EMPTY": "新位置编码不能为空",
       "TARGET_ALREADY_EXISTS": "该位置已存在，请选择“现有位置”",
       "TARGET_TYPE_INVALID": "目标类型不合法",
+      "UNKNOWN": "未知错误"
+    }
+  },
+  "adjust": {
+    "title": "手动调整 / Manual Adjustment",
+    "left": {
+      "title": "调整信息",
+      "type": "调整类型",
+      "deduct": "出库（扣减）",
+      "add": "入库（增加）",
+      "reason": "调整原因",
+      "note": "备注",
+      "notePlaceholder": "例如：包装破损、点数差异等"
+    },
+    "right": {
+      "title": "目标位置与数量",
+      "existing": "选择现有位置",
+      "new": "新建位置",
+      "selectPlaceholder": "请选择位置",
+      "inputPlaceholder": "输入新位置编码，如 BOOK-03",
+      "qty": "调整数量",
+      "available": "当前可用"
+    },
+    "btn": {
+      "cancel": "取消",
+      "confirm": "确认调整",
+      "submitting": "提交中…"
+    },
+    "toast": {
+      "failed": "调整失败"
+    },
+    "reason": {
+      "damage": "货损",
+      "shrinkage": "未知损耗",
+      "cycle": "盘点差异",
+      "other": "其他"
+    },
+    "error": {
+      "PRODUCT_NOT_FOUND": "产品不存在",
+      "BAD_QTY": "数量不合法",
+      "TARGET_NOT_SELECTED": "请选择目标位置",
+      "NEW_CODE_EMPTY": "新位置编码不能为空",
+      "TARGET_TYPE_INVALID": "目标类型不合法",
+      "TARGET_NOT_FOUND": "目标位置不存在",
+      "NOT_ENOUGH_QTY": "库存不足，无法扣减",
       "UNKNOWN": "未知错误"
     }
   }

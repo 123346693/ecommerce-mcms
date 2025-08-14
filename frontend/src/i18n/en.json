@@ -35,7 +35,8 @@
     "ship": "Outbound",
     "clickToSeeAllLocations": "Click to view all locations",
     "clickToSeeAllTransactions": "Click to view all transactions",
-    "inventoryTransfer": "Inventory Transfer"
+    "inventoryTransfer": "Inventory Transfer",
+    "manualAdjustment": "Manual Adjustment"
   },
   "transfer": {
     "title": "Inventory Transfer",
@@ -76,6 +77,51 @@
       "NEW_CODE_EMPTY": "New location code cannot be empty",
       "TARGET_ALREADY_EXISTS": "Location already exists, choose \"existing location\"",
       "TARGET_TYPE_INVALID": "Invalid target type",
+      "UNKNOWN": "Unknown error"
+    }
+  },
+  "adjust": {
+    "title": "Manual Adjustment",
+    "left": {
+      "title": "Adjustment Info",
+      "type": "Adjustment Type",
+      "deduct": "Outbound (Deduct)",
+      "add": "Inbound (Add)",
+      "reason": "Reason",
+      "note": "Note",
+      "notePlaceholder": "e.g. damaged package, count variance"
+    },
+    "right": {
+      "title": "Target & Quantity",
+      "existing": "Choose existing location",
+      "new": "Create new location",
+      "selectPlaceholder": "Select a location",
+      "inputPlaceholder": "Enter new location code, e.g. BOOK-03",
+      "qty": "Quantity",
+      "available": "Available"
+    },
+    "btn": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Adjustment",
+      "submitting": "Submitting…"
+    },
+    "toast": {
+      "failed": "Adjustment failed"
+    },
+    "reason": {
+      "damage": "Damage",
+      "shrinkage": "Shrinkage",
+      "cycle": "Cycle Count",
+      "other": "Other"
+    },
+    "error": {
+      "PRODUCT_NOT_FOUND": "Product not found",
+      "BAD_QTY": "Invalid quantity",
+      "TARGET_NOT_SELECTED": "Please select a location",
+      "NEW_CODE_EMPTY": "New location code cannot be empty",
+      "TARGET_TYPE_INVALID": "Invalid target type",
+      "TARGET_NOT_FOUND": "Target location not found",
+      "NOT_ENOUGH_QTY": "Insufficient stock to deduct",
       "UNKNOWN": "Unknown error"
     }
   }

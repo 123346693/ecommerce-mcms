@@ -1,5 +1,5 @@
 // src/pages/productData.js
-// ====== 原有数据，保持不变 ======
+// ====== 原有数据，保持不变（示例）======
 const productsData = [
   {
     sku: "JEW9999",
@@ -11,7 +11,7 @@ const productsData = [
     depth: 6,
     weight: 0.3,
     stockLocations: [
-      { location: "EB-001-A", quantity: 500 },
+      { location: "EB-001-A", quantity: 500, isPrimary: true },
       { location: "BNP-07", quantity: 200 },
       { location: "RACK-12", quantity: 185 }
     ],
@@ -33,7 +33,7 @@ const productsData = [
     depth: 5,
     weight: 0.4,
     stockLocations: [
-      { location: "TOY-01", quantity: 150 },
+      { location: "TOY-01", quantity: 150, isPrimary: true },
       { location: "TOY-03", quantity: 100 }
     ],
     transactions: [
@@ -53,7 +53,7 @@ const productsData = [
     depth: 25,
     weight: 0.2,
     stockLocations: [
-      { location: "CLOT-01", quantity: 400 },
+      { location: "CLOT-01", quantity: 400, isPrimary: true },
       { location: "CLOT-02", quantity: 180 }
     ],
     transactions: [
@@ -73,7 +73,7 @@ const productsData = [
     depth: 5,
     weight: 2,
     stockLocations: [
-      { location: "BOOK-01", quantity: 100 },
+      { location: "BOOK-01", quantity: 100, isPrimary: true },
       { location: "BOOK-02", quantity: 50 }
     ],
     transactions: [
@@ -86,19 +86,10 @@ const productsData = [
 
 export default productsData;
 
-
-// ====== 下面是新增的命名导出方法（前端内存模拟“库存转移”）======
-
-/**
- * 通过 SKU 获取产品引用（直接返回数组中的对象引用）
- */
+// ====== 昨天的工具函数（保留）======
 export function findProductBySku(sku) {
   return productsData.find(p => p?.sku === sku) || null;
 }
-
-/**
- * 计算某产品总库存（优先累加 stockLocations；没有时回退 p.quantity）
- */
 export function getTotalQuantity(p) {
   const arr = Array.isArray(p?.stockLocations) ? p.stockLocations : [];
   if (arr.length > 0) {
@@ -106,11 +97,6 @@ export function getTotalQuantity(p) {
   }
   return Number(p?.quantity ?? 0) || 0;
 }
-
-/**
- * 设置主库位（仅前端标记）：在 stockLocations 项上增加/更新 isPrimary
- * - 只允许一个 isPrimary = true
- */
 export function setPrimaryLocation(sku, locationCode) {
   const p = findProductBySku(sku);
   if (!p) return false;
@@ -123,18 +109,6 @@ export function setPrimaryLocation(sku, locationCode) {
   }
   return false;
 }
-
-/**
- * 库存转移（多来源 → 单目标；可新建目标；支持“设为主库位”）
- * @param {Object} payload
- * payload = {
- *   sku: 'BOOK0001',
- *   sources: [ { location: 'BOOK-02', qty: 10 }, { location: 'RACK-12', qty: 5 } ],
- *   target: { type: 'existing' | 'new', location?: 'BOOK-01', newCode?: 'NEW-LOC' },
- *   setAsPrimary: true/false
- * }
- * @returns {Object} 结果
- */
 export function transferStock(payload) {
   const { sku, sources, target, setAsPrimary } = payload || {};
   const p = findProductBySku(sku);
@@ -145,7 +119,6 @@ export function transferStock(payload) {
 
   const locArr = Array.isArray(p.stockLocations) ? p.stockLocations : (p.stockLocations = []);
 
-  // 校验来源
   for (const s of srcs) {
     const code = String(s?.location ?? '');
     const qty = Number(s?.qty);
@@ -159,7 +132,6 @@ export function transferStock(payload) {
     }
   }
 
-  // 目标位置
   let targetCode = '';
   if (target?.type === 'existing') {
     targetCode = String(target?.location || '');
@@ -171,15 +143,12 @@ export function transferStock(payload) {
     return { ok: false, error: 'TARGET_TYPE_INVALID' };
   }
 
-  // 如果是新位置且已存在，则转为 existing
   let targetRow = locArr.find(x => String(x?.location) === targetCode);
   if (!targetRow) {
-    // 新建目标
     targetRow = { location: targetCode, quantity: 0 };
     locArr.push(targetRow);
   }
 
-  // 执行转移：扣减来源、累计目标
   let movedTotal = 0;
   const emptiedSources = [];
   for (const s of srcs) {
@@ -189,7 +158,6 @@ export function transferStock(payload) {
     row.quantity = (Number(row.quantity) || 0) - qty;
     movedTotal += qty;
     if ((Number(row.quantity) || 0) <= 0) {
-      // 数量为 0：删除该库位记录（你的要求）
       const idx = locArr.indexOf(row);
       if (idx >= 0) {
         locArr.splice(idx, 1);
@@ -199,7 +167,6 @@ export function transferStock(payload) {
   }
   targetRow.quantity = (Number(targetRow.quantity) || 0) + movedTotal;
 
-  // 设为主库位（Pickface）
   if (setAsPrimary) {
     locArr.forEach(x => { if (x) x.isPrimary = false; });
     const t = locArr.find(x => String(x?.location) === targetCode);
@@ -211,5 +178,74 @@ export function transferStock(payload) {
     movedTotal,
     target: { location: targetCode, newQty: targetRow.quantity, isPrimary: !!targetRow.isPrimary },
     emptiedSources
+  };
+}
+
+// ====== 新增：手动调整并记一条交易 ======
+/**
+ * 手动调整库存，并追加一条交易记录（正数=补货，负数=出货）
+ * @param {{
+ *   sku: string,
+ *   target: { type: 'existing'|'new', location?: string, newCode?: string },
+ *   quantity: number,   // 正/负
+ *   reason: 'damage'|'shrinkage'|'cycle'|'other',
+ *   note?: string
+ * }} payload
+ */
+export function adjustStockWithTransaction(payload) {
+  const { sku, target, quantity, reason, note } = payload || {};
+  const p = findProductBySku(sku);
+  if (!p) return { ok: false, error: 'PRODUCT_NOT_FOUND' };
+  const q = Number(quantity);
+  if (!Number.isFinite(q) || q === 0) return { ok: false, error: 'BAD_QTY' };
+
+  const locArr = Array.isArray(p.stockLocations) ? p.stockLocations : (p.stockLocations = []);
+  // 目标位置解析
+  let targetCode = '';
+  if (target?.type === 'existing') {
+    targetCode = String(target?.location || '');
+    if (!targetCode) return { ok: false, error: 'TARGET_NOT_SELECTED' };
+  } else if (target?.type === 'new') {
+    targetCode = String(target?.newCode || '').trim();
+    if (!targetCode) return { ok: false, error: 'NEW_CODE_EMPTY' };
+    // 如果已存在则视为 existing
+    const exist = locArr.find(x => String(x?.location) === targetCode);
+    if (exist) {
+      // 直接覆盖为 existing 模式
+    } else {
+      locArr.push({ location: targetCode, quantity: 0 });
+    }
+  } else {
+    return { ok: false, error: 'TARGET_TYPE_INVALID' };
+  }
+
+  let row = locArr.find(x => String(x?.location) === targetCode);
+  if (!row) return { ok: false, error: 'TARGET_NOT_FOUND' };
+
+  // 扣/加库存；扣减不能为负
+  const after = (Number(row.quantity) || 0) + q;
+  if (after < 0) return { ok: false, error: 'NOT_ENOUGH_QTY' };
+  row.quantity = after;
+
+  // 若变为 0 => 删除该位置记录
+  if (row.quantity === 0) {
+    const idx = locArr.indexOf(row);
+    if (idx >= 0) locArr.splice(idx, 1);
+  }
+
+  // 追加一条交易记录（保留你既有结构：{ date, quantity }）
+  const nowStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  if (!Array.isArray(p.transactions)) p.transactions = [];
+  p.transactions.unshift({
+    date: nowStr,
+    quantity: q,
+    reason,     // 前端可能不展示，但留下字段以便将来用
+    note        // 备注
+  });
+
+  return {
+    ok: true,
+    target: { location: targetCode, newQty: row?.quantity ?? 0 },
+    tx: { date: nowStr, quantity: q, reason, note }
   };
 }
