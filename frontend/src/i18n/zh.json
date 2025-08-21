@@ -18,7 +18,8 @@
     "select": "选择",
     "clear": "清空",
     "ok": "确定",
-    "cancel": "取消"
+    "cancel": "取消",
+    "all": "全部"
   },
   "product": {
     "sku": "SKU",
@@ -45,7 +46,17 @@
     "clickToSeeAllTransactions": "点击查看全部出货/补货明细",
     "inventoryTransfer": "库存转移",
     "manualAdjustment": "手动调整",
-    "searchPlaceholder": "搜索产品名或货号"
+    "searchPlaceholder": "搜索产品名或货号",
+    "positionLabel": "位置",
+    "allStatus": "所有状态",
+    "allLocations": "所有位置",
+    "statusFilterLabel": "库存状态",
+    "status": {
+      "outOfStock": "缺货",
+      "lowStock": "低库存",
+      "normal": "正常",
+      "overstock": "超库存"
+    }
   },
   "transfer": {
     "title": "库存转移",
@@ -148,5 +159,16 @@
   "filter": {
     "location": "位置",
     "searchLocation": "搜索位置"
+  },
+  "pagination": {
+    "showing": "显示",
+    "of": "共",
+    "perPage": "每页",
+    "page": "页",
+    "prev": "上一页",
+    "next": "下一页"
+  },
+  "app": {
+    "noData": "暂无数据"
   }
 }

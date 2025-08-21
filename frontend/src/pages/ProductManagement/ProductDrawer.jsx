@@ -1,7 +1,10 @@
+// frontend/src/pages/ProductManagement/ProductDrawer.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TransferModal from './TransferModal';
 import AdjustmentModal from './AdjustmentModal';
+import AllLocationsModal from './AllLocationsModal';
+import AllTransactionsModal from './AllTransactionsModal';
 import { getTotalQuantity, setPrimaryLocation } from './productData';
 
 export default function ProductDrawer({
@@ -17,6 +20,10 @@ export default function ProductDrawer({
 
   const [transferOpen, setTransferOpen] = useState(false);
   const [adjustOpen, setAdjustOpen] = useState(false);
+
+  // 新增：内部控制 “全部库位 / 全部出入库” 弹窗
+  const [allLocOpen, setAllLocOpen] = useState(false);
+  const [allTxOpen, setAllTxOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose?.(); };
@@ -61,6 +68,8 @@ export default function ProductDrawer({
     setEditing(false);
     setTransferOpen(false);
     setAdjustOpen(false);
+    setAllLocOpen(false);
+    setAllTxOpen(false);
   }, [product]);
 
   const update = (k, v) => setForm(s => ({ ...s, [k]: v }));
@@ -82,6 +91,18 @@ export default function ProductDrawer({
 
   const handleAdjustDone = () => {
     triggerRefresh();
+  };
+
+  // 统一打开弹窗的内部处理（保持对外 props 不破坏）
+  const openAllLocations = () => {
+    // 如果父组件提供了处理器，也调用一下（兼容旧逻辑）
+    onShowAllLocations?.();
+    // 同时打开本地弹窗，确保可见
+    setAllLocOpen(true);
+  };
+  const openAllTransactions = () => {
+    onShowAllTransactions?.();
+    setAllTxOpen(true);
   };
 
   return (
@@ -184,7 +205,7 @@ export default function ProductDrawer({
                       key={`${lname}-${idx}`}
                       className="px-3 py-2 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                       title={t('product.clickToSeeAllLocations')}
-                      onClick={() => onShowAllLocations?.()}
+                      onClick={openAllLocations}
                     >
                       <span className="text-gray-800">
                         {lname}
@@ -230,7 +251,7 @@ export default function ProductDrawer({
                       key={`tx-${idx}`}
                       className="px-3 py-2 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                       title={t('product.clickToSeeAllTransactions')}
-                      onClick={() => onShowAllTransactions?.()}
+                      onClick={openAllTransactions}
                     >
                       <span className="text-gray-800">{when} {desc}</span>
                       <span className={q < 0 ? 'text-red-600' : 'text-emerald-700'}>
@@ -260,6 +281,22 @@ export default function ProductDrawer({
         product={product}
         onDone={handleAdjustDone}
       />
+
+      {/* 全部库位弹窗 */}
+      {allLocOpen && (
+        <AllLocationsModal
+          product={product}
+          onClose={() => setAllLocOpen(false)}
+        />
+      )}
+
+      {/* 全部出入库弹窗 */}
+      {allTxOpen && (
+        <AllTransactionsModal
+          product={product}
+          onClose={() => setAllTxOpen(false)}
+        />
+      )}
     </div>
   );
 }

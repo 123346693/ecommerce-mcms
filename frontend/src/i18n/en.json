@@ -18,7 +18,8 @@
     "select": "Select",
     "clear": "Clear",
     "ok": "OK",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "all": "All"
   },
   "product": {
     "sku": "SKU",
@@ -45,7 +46,17 @@
     "clickToSeeAllTransactions": "Click to view all shipment/restock details",
     "inventoryTransfer": "Inventory Transfer",
     "manualAdjustment": "Manual Adjustment",
-    "searchPlaceholder": "Search name or SKU"
+    "searchPlaceholder": "Search name or SKU",
+    "positionLabel": "Location",
+    "allStatus": "All Status",
+    "allLocations": "All Locations",
+    "statusFilterLabel": "Stock Status",
+    "status": {
+      "outOfStock": "Out of Stock",
+      "lowStock": "Low Stock",
+      "normal": "Normal",
+      "overstock": "Overstock"
+    }
   },
   "transfer": {
     "title": "Inventory Transfer",
@@ -75,18 +86,6 @@
     },
     "toast": {
       "failed": "Transfer failed"
-    },
-    "error": {
-      "NO_SOURCES": "Please select at least one source location and enter transfer quantities",
-      "BAD_SOURCE_INPUT": "Invalid source quantity",
-      "SOURCE_NOT_FOUND": "Source location not found",
-      "NOT_ENOUGH_QTY": "Insufficient stock at source",
-      "TARGET_NOT_SELECTED": "Please select a target location first",
-      "TARGET_EQUALS_SOURCE": "Target location cannot be the same as source",
-      "NEW_CODE_EMPTY": "New location code cannot be empty",
-      "TARGET_ALREADY_EXISTS": "Location already exists; please choose \"Existing Location\"",
-      "TARGET_TYPE_INVALID": "Invalid target type",
-      "UNKNOWN": "Unknown error"
     }
   },
   "adjust": {
@@ -148,5 +147,16 @@
   "filter": {
     "location": "Location",
     "searchLocation": "Search location"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "perPage": "Per page",
+    "page": "Page",
+    "prev": "Prev",
+    "next": "Next"
+  },
+  "app": {
+    "noData": "No data"
   }
 }
